@@ -33,15 +33,25 @@ function unhighlightBar(bar) {
   bar.style.opacity = "1";
 }
 
-function swapBars(firstEl, nextEl, firstDistance, nextDistance) {
-  firstEl.style.transform = `translate(${firstDistance.toString()}px)`;
-  nextEl.style.transform = `translate(${nextDistance.toString()}px)`;
+function highlightBars(bars, indexArr, firstIndex, secondIndex, counter) {
+  const firstBar = bars[indexArr[firstIndex]];
+  const secondBar = bars[indexArr[secondIndex]];
+  setTimeout(() => {
+    unhighlightAllBars(bars);
+    highlightBar(firstBar);
+    highlightBar(secondBar);
+  }, ANIMATION_SPEED * counter);
 }
 
-function highlightBars(bars, firstBar, secondBar) {
-  unhighlightAllBars(bars);
-  highlightBar(firstBar);
-  highlightBar(secondBar);
+function swapBars(bars, indexArr, firstIndex, secondIndex, counter) {
+  const firstEl = bars[indexArr[firstIndex]];
+  const secondEl = bars[indexArr[secondIndex]];
+  const firstDistance = (secondIndex - indexArr[firstIndex]) * 50;
+  const secondDistance = (firstIndex - indexArr[secondIndex]) * 50;
+  setTimeout(() => {
+    firstEl.style.transform = `translate(${firstDistance.toString()}px)`;
+    secondEl.style.transform = `translate(${secondDistance.toString()}px)`;
+  }, ANIMATION_SPEED * counter);
 }
 
 function bubbleSort(arr, bars) {
@@ -52,24 +62,9 @@ function bubbleSort(arr, bars) {
   while (!isSorted) {
     isSorted = true;
     for (let i = 0; i < newArr.length - 1; i++) {
-      setTimeout(
-        highlightBars,
-        200 * globalCounter,
-        bars,
-        bars[indexArr[i]],
-        bars[indexArr[i + 1]]
-      );
+      highlightBars(bars, indexArr, i, i + 1, globalCounter);
       if (newArr[i] > newArr[i + 1]) {
-        if (bars) {
-          setTimeout(
-            swapBars,
-            200 * globalCounter,
-            bars[indexArr[i]],
-            bars[indexArr[i + 1]],
-            (i + 1 - indexArr[i]) * 50,
-            (i - indexArr[i + 1]) * 50
-          );
-        }
+        swapBars(bars, indexArr, i, i + 1, globalCounter);
         swapTwoItems(newArr, i, i + 1);
         swapTwoItems(indexArr, i, i + 1);
         isSorted = false;
@@ -77,7 +72,7 @@ function bubbleSort(arr, bars) {
       globalCounter++;
     }
   }
-  setTimeout(() => unhighlightAllBars(bars), 200 * globalCounter);
+  setTimeout(() => unhighlightAllBars(bars), ANIMATION_SPEED * globalCounter);
   return newArr;
 }
 
@@ -88,32 +83,19 @@ function selectionSort(arr, bars) {
   for (let i = 0; i < newArr.length; i++) {
     let smallest = i;
     for (let j = i + 1; j < newArr.length; j++) {
-      setTimeout(
-        highlightBars,
-        200 * globalCounter,
-        bars,
-        bars[indexArr[i]],
-        bars[indexArr[j]]
-      );
+      highlightBars(bars, indexArr, i, j, globalCounter);
       if (newArr[j] < newArr[smallest]) {
         smallest = j;
       }
-      globalCounter++;
     }
     if (smallest !== i) {
-      setTimeout(
-        swapBars,
-        200 * globalCounter,
-        bars[indexArr[i]],
-        bars[indexArr[smallest]],
-        (smallest - indexArr[i]) * 50,
-        (i - indexArr[smallest]) * 50
-      );
+      swapBars(bars, indexArr, i, smallest, globalCounter);
       swapTwoItems(newArr, i, smallest);
       swapTwoItems(indexArr, i, smallest);
     }
+    globalCounter++;
   }
-  setTimeout(() => unhighlightAllBars(bars), 200 * globalCounter);
+  setTimeout(() => unhighlightAllBars(bars), ANIMATION_SPEED * globalCounter);
   return newArr;
 }
 
@@ -133,8 +115,10 @@ function runAlgorithm(name, ...args) {
   if (name === "selection-sort") selectionSort(...args);
 }
 
+const ANIMATION_SPEED = 200;
+const ARRAY_SIZE = 10;
 const barsContainer = document.querySelector(".bars");
-const bars = new Array(10).fill(0).map((_) => ({
+const bars = new Array(ARRAY_SIZE).fill(0).map((_) => ({
   color: generateRandomColor(),
   height: generateRandomNumber({ min: 50, max: 500 }).toString(),
 }));
