@@ -15,7 +15,7 @@ main {
 .bars {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .bars > div:not(:last-child) {
