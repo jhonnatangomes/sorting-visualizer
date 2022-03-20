@@ -1,0 +1,28 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  transition: all 0.5s ease;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.bars {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bars > div:not(:last-child) {
+  margin-right: 20px;
+}
+
+.bar {
+  width: 30px;
+  height: 500px;
+}
