@@ -36,3 +36,16 @@ select {
   flex-direction: column;
   align-items: center;
 }
+
+span {
+  font-size: 100px;
+}
+
+input {
+  margin-right: 30px;
+}
+
+.palavra {
+  width: 100%;
+  height: 200px;
+}
