@@ -76,6 +76,23 @@ function bubbleSort(arr, bars) {
   return newArr;
 }
 
+function trocaVogais(string) {
+  let resultado = [];
+  let palavra = ""
+  for ( let i = 0 ; i < string.length ; i++) {
+    if ( string[i] == "a" || string[i] == "e" ||
+       string[i] == "i" || string[i] == "o" ||
+       string[i] == "u" ) {
+      resultado.push("1");
+     palavra = palavra + resultado[i];
+    } else {
+      resultado.push(string[i]); 
+      palavra = palavra + resultado[i];
+    }
+  }
+  return palavra;
+}
+
 function selectionSort(arr, bars) {
   const newArr = [...arr];
   const indexArr = newArr.map((_, i) => i);
